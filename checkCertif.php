@@ -6,14 +6,14 @@
  * @author  Oros42 <oros.checkcrt@ecirtam.net>
  * @link    https://github.com/oros42
  * @license CC0 Public Domain
- * @version 0.6
- * @date    2019-10-21
+ * @version 0.7
+ * @date    2019-12-08
  */
 
 class CheckCertif
 {
     // Version
-    const API_VERSION = "0.6";
+    const API_VERSION = "0.7";
 
     // Parameters
 
@@ -121,6 +121,7 @@ class CheckCertif
     private $_targetURL = "";
     private $_redis = null;
     private $_action = null;
+    private $_clientApiVersion = null;
 
     /**
      * Construct
@@ -174,6 +175,7 @@ EOF
             'i':<AES iv>, //require
             'a':<'v'|''>, //optionnal
             'url':<url> //optionnal
+            'v':<API version> //optionnal
         }
         */
 
@@ -563,6 +565,11 @@ EOF
             $this->_log("targetURL : ".$this->_targetURL);
         }
 
+        // Client API version
+        if (!empty($msgArray['v'])) {
+            $this->_clientApiVersion = $msgArray['v'];
+        }
+
         if (empty($this->_action) && empty($this->_targetURL)) {
             return false;
         }
@@ -629,7 +636,12 @@ EOF
                 );
             }
             if ($m) {
-                $this->_response = base64_encode($m.$tag);//FIXME
+                if ($this->_clientApiVersion != null) {
+                    $this->_response = base64_encode($m).';'.base64_encode($tag);
+                } else {
+                    // API <= 0.6
+                    $this->_response = base64_encode($m.$tag);
+                }
                 $this->_log("response : ".$this->_response);
                 return true;
             } else {

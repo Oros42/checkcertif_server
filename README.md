@@ -2,6 +2,8 @@ Work in progress !
 
 # checkcertif_server
 
+PHP server  
+  
 [See the main project](https://github.com/Oros42/checkcertif)  
 
 ## Requirement
@@ -69,7 +71,7 @@ save ""
 #save 60 10000
 ```
 
-### Test
+#### Test
 ```
 <?php
 $redis = new Redis();
@@ -89,8 +91,8 @@ https://github.com/phpredis/phpredis
 ### GnuPG
 
 ```
-email="<demo@example.com>"
-gpgHome="private"
+email="<demo@example.com>" # change this
+gpgHome="/<PATH_TO_SAFE_DIR>/" # change this to a safe place
 mkdir -p $gpgHome
 chmod 700 $gpgHome
 gpg --batch --homedir $gpgHome --passphrase '' --quick-generate-key "$email" secp256k1 default 20y
