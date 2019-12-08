@@ -99,3 +99,7 @@ gpg --batch --homedir $gpgHome --passphrase '' --quick-generate-key "$email" sec
 gpg --homedir $gpgHome -a --export "$email" > public.gpg
 chown -R www-data $gpgHome
 ```
+  
+## Test
+  
+Tests are here : https://github.com/Oros42/checkcertif/tree/master/tests  

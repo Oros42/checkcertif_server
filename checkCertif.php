@@ -4,7 +4,7 @@
  * php version >=7.1
  *
  * @author  Oros42 <oros.checkcrt@ecirtam.net>
- * @link    https://github.com/oros42
+ * @link    https://github.com/Oros42/checkcertif_server
  * @license CC0 Public Domain
  * @version 0.7
  * @date    2019-12-08
@@ -484,7 +484,6 @@ EOF
         }
         return $r;
     }
-    
 
     /**
      * Decode the GPG message
