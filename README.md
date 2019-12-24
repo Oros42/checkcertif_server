@@ -40,13 +40,10 @@ systemctl restart nginx
 ```
 
 ```
-cd /var/www/html
-
-gpgHome="private"
-mkdir -p $gpgHome
-chown -R www-data $gpgHome
-chmod 700 $gpgHome
-#gpg-agent --daemon --homedir $gpgHome
+cd /var/www/html # change this to your config
+wget -q https://raw.githubusercontent.com/Oros42/checkcertif_server/master/checkCertif.php
+# you can copy the code of the index.php in an other file if you want
+wget -q https://raw.githubusercontent.com/Oros42/checkcertif_server/master/index.php
 ```
 
 
@@ -69,6 +66,9 @@ save ""
 #save 900 1
 #save 300 10
 #save 60 10000
+```
+```
+systemctl restart redis
 ```
 
 #### Test
@@ -99,7 +99,7 @@ gpg --batch --homedir $gpgHome --passphrase '' --quick-generate-key "$email" sec
 gpg --homedir $gpgHome -a --export "$email" > public.gpg
 chown -R www-data $gpgHome
 ```
-  
+
 ## Test
   
 Tests are here : https://github.com/Oros42/checkcertif/tree/master/tests  
