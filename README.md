@@ -17,7 +17,7 @@ redis
 ## Install
 
 ### Php
-```
+```bash
 apt install php-common libgpgme11-dev php-pear php-dev php-redis
 
 apt install php-cli
@@ -31,15 +31,15 @@ phpenmod gnupg
 ```
 
 Restart your webserver
-```
+```bash
 systemctl restart apache2
 ```
 or
-```
+```bash
 systemctl restart nginx
 ```
 
-```
+```bash
 cd /var/www/html # change this to your config
 wget -q https://raw.githubusercontent.com/Oros42/checkcertif_server/master/checkCertif.php
 # you can copy the code of the index.php in an other file if you want
@@ -48,7 +48,7 @@ wget -q https://raw.githubusercontent.com/Oros42/checkcertif_server/master/index
 
 
 ### Redis
-```
+```bash
 apt install redis
 ```
 Default listen on 127.0.0.1:6379 and no password.  
@@ -72,7 +72,7 @@ systemctl restart redis
 ```
 
 #### Test
-```
+```php
 <?php
 $redis = new Redis();
 $redis->connect('127.0.0.1', 6379);
@@ -90,13 +90,17 @@ https://github.com/phpredis/phpredis
 
 ### GnuPG
 
-```
+```bash
+cd /var/www/html # change this to your config
 email="<demo@example.com>" # change this
-gpgHome="/<PATH_TO_SAFE_DIR>/" # change this to a safe place
+gpgHome="/<SAFE_DIR_PATH>/" # change this to a safe place
 mkdir -p $gpgHome
 chmod 700 $gpgHome
-gpg --batch --homedir $gpgHome --passphrase '' --quick-generate-key "$email" secp256k1 default 20y
-gpg --homedir $gpgHome -a --export "$email" > public.gpg
+export GNUPGHOME=$gpgHome
+gpg --batch --passphrase '' --quick-generate-key "$email" secp256k1 cert 20y
+FPR=$(gpg --list-options show-only-fpr-mbox --list-secret-keys | awk '{print $1}')
+gpg --batch --passphrase '' --quick-add-key $FPR secp256k1 encrypt 1y
+gpg -a --export "$email" > public.gpg
 chown -R www-data $gpgHome
 ```
 

@@ -7,7 +7,7 @@
  * @link    https://github.com/Oros42/checkcertif_server
  * @license CC0 Public Domain
  * @version 0.7
- * @date    2019-12-08
+ * @date    2019-12-24
  */
 
 class CheckCertif
@@ -304,16 +304,6 @@ EOF
             $this->_gpg = new gnupg();
             $keys = $this->_gpg->keyinfo('');
             if (empty($keys)) {
-                /*
-                $ email="<demo@example.com>"
-                $ gpgHome="/<PATH>/private"
-                $ mkdir -p $gpgHome
-                $ chmod 700 $gpgHome
-                $ gpg --batch --homedir $gpgHome --passphrase '' \
-                    --quick-generate-key "$email" secp256k1 default 20y
-                $ gpg --homedir $gpgHome -a --export "$email" > public.gpg
-                $ chown -R www-data $gpgHome
-                */
                 die($this->_showError("You have to create a GnuPG key!"));
             }
         } catch (Exception $e) {
