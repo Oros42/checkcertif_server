@@ -7,7 +7,7 @@
  * @link    https://github.com/Oros42/checkcertif_server
  * @license CC0 Public Domain
  * @version 0.7
- * @date    2019-12-24
+ * @date    2020-01-05
  */
 
 class CheckCertif
@@ -390,7 +390,7 @@ EOF
         $server = $port = "";
         try {
             // $msgArray['url'] == "https://en.wikipedia.org/wiki/URL"
-            $url = preg_replace("!https?://!i", "", filter_var($url, FILTER_SANITIZE_URL));
+            $url = preg_replace("!.*://!i", "", filter_var($url, FILTER_SANITIZE_URL));
             // $url == en.wikipedia.org/wiki/URL
             $parsedUrl = parse_url("https://" . $url);
             // $parsedUrl == ['scheme' => 'https', 'host' => 'en.wikipedia.org', 'path' => '/wiki/URL']
