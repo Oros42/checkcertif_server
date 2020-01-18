@@ -1,0 +1,36 @@
+<?php
+$this->_debug = false;
+$this->_logFile = "./debug.log"; // Change the path
+$this->_gnupgHome = "private"; // Path to GnuPG's home
+$this->_redisHost = "127.0.0.1";
+$this->_redisPort = 6379;
+$this->_redisPassword = ""; //Don't forget to set a password !
+$this->_bannedIps = [
+    //IPv4
+    '^127\\..*$',
+    '^0\\.0\\.0\\.0.*$',
+    '^10\\..*$',
+    '^172\\.(1[6-9]|2[0-9]|30|31)\\..*$',
+    '^192\\.168\\..*$',
+    //IPv6
+    '^::1.*$',
+    '^::1.*$',
+    '^fc[0-9a-fA-F][0-9a-fA-F]:.*$',
+    '^fd[0-9a-fA-F][0-9a-fA-F]:.*$',
+    '^fe80:.*$',
+    '^fe00::.*$',
+    '^ff00::.*$',
+    '^ff02::.*$',
+    '^ff02::.*$'
+];
+$this->_bannedHosts = [
+    //domain
+    '^.*\\.lan$',
+    '^.*\\.local$',
+    '^.*\\.localdomain$',
+    '^.*localhost$',
+    '^.*ip6-localnet$',
+    '^.*ip6-mcastprefix$',
+    '^.*ip6-allnodes$',
+    '^.*ip6-allrouters$'
+];

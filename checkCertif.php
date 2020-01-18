@@ -132,12 +132,10 @@ class CheckCertif
             $debug = $this->_debug ? "true" : "false";
             $bannedIps = var_export($this->_bannedIps, true);
             $bannedHosts = var_export($this->_bannedHosts, true);
-            $version = self::API_VERSION;
             file_put_contents(
                 "config_chkcrt.php",
                 <<<EOF
 <?php
-\$version = "$version";
 \$this->_debug = $debug;
 \$this->_logFile = "$this->_logFile"; // Change the path
 \$this->_gnupgHome = "$this->_gnupgHome"; // Path to GnuPG's home

@@ -42,9 +42,11 @@ systemctl restart nginx
 ```bash
 cd /var/www/html # change this to your config
 wget -q https://raw.githubusercontent.com/Oros42/checkcertif_server/master/checkCertif.php
+wget -q https://raw.githubusercontent.com/Oros42/checkcertif_server/master/config_chkcrt.php.dist -O config_chkcrt.php
 # you can copy the code of the index.php in an other file if you want
 wget -q https://raw.githubusercontent.com/Oros42/checkcertif_server/master/index.php
 ```
+Edit config_chkcrt.php for your config.  
 
 
 ### Redis
