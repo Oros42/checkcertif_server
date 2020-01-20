@@ -7,7 +7,7 @@
  * @link    https://github.com/Oros42/checkcertif_server
  * @license CC0 Public Domain
  * @version 0.7
- * @date    2020-01-05
+ * @date    2020-01-20
  */
 
 class CheckCertif
@@ -129,24 +129,7 @@ class CheckCertif
     public function __construct()
     {
         if (!is_file("config_chkcrt.php")) {
-            $debug = $this->_debug ? "true" : "false";
-            $bannedIps = var_export($this->_bannedIps, true);
-            $bannedHosts = var_export($this->_bannedHosts, true);
-            file_put_contents(
-                "config_chkcrt.php",
-                <<<EOF
-<?php
-\$this->_debug = $debug;
-\$this->_logFile = "$this->_logFile"; // Change the path
-\$this->_gnupgHome = "$this->_gnupgHome"; // Path to GnuPG's home
-\$this->_redisHost = "$this->_redisHost";
-\$this->_redisPort = $this->_redisPort;
-\$this->_redisPassword = "$this->_redisPassword"; //Don't forget to set a password !
-\$this->_bannedIps = $bannedIps;
-\$this->_bannedHosts = $bannedHosts;
-EOF
-            );
-            die("Edit the conf file to your needs.");
+            die("Copy config_chkcrt.php.dist to config_chkcrt.php and edit the conf file to your needs.");
         }
         include_once "config_chkcrt.php";
 
@@ -747,17 +730,8 @@ EOF
 
         $cert = '';
         @openssl_x509_export($cp, $cert);
-
-        $cleanedCert = preg_replace('/\-+(BEGIN|END) CERTIFICATE\-+/', '', $cert);
-        $cleanedCert = str_replace(array( "\n\r", "\n", "\r" ), '', trim($cleanedCert));
-        $decCert = @base64_decode($cleanedCert);
-        if (empty($decCert)) {
-            $this->_log("can't get certificate");
-            return $hash;
-        }
-
-        $hash[1] = sha1($decCert);
-        $hash[2] = hash('sha256', $decCert);
+        $hash[1] = openssl_x509_fingerprint($cert, 'sha1');
+        $hash[2] = openssl_x509_fingerprint($cert, 'sha256');
         $this->_log("hash :".json_encode($hash));
         return $hash;
         /*
