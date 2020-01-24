@@ -68,6 +68,13 @@ class CheckCertif
     private $_redisPassword = "";
 
     /**
+     * Salt
+     *
+     * @var string $_salt Salt
+     */
+    private $_salt = "HMGvngdfiGzoK5Ft4XBU5";
+
+    /**
      * Banned ips
      *
      * @var array $_bannedIps Regex to exclude hosts of certificat's check
@@ -119,6 +126,7 @@ class CheckCertif
     private $_aesKey64 = "";
     private $_aesIV64 = "";
     private $_targetURL = "";
+    private $_targetURLHash = "";
     private $_redis = null;
     private $_action = null;
     private $_clientApiVersion = null;
@@ -528,6 +536,7 @@ class CheckCertif
         // URL
         if (!empty($msgArray['url'])) {
             $this->_targetURL = $this->_getDomain($msgArray['url']);
+            $this->_targetURLHash = hash('sha256', $this->$_salt.$this->_targetURL);
             if ($this->_targetURL === "") {
                 $this->_log("error targetURL");
                 return false;
@@ -639,13 +648,13 @@ class CheckCertif
         if ($this->_redisPassword !== "") {
             $this->_redis->auth($this->_redisPassword);
         }
-        $hashFromCache = $this->_redis->get($this->_targetURL);
+        $hashFromCache = $this->_redis->get($this->_targetURLHash);
         if ($hashFromCache) {
             $watchdog = 21;
             while ($watchdog > 0 && substr($hashFromCache, 0, 4) === "wait") {
                 $watchdog--;
                 usleep(100);
-                $hashFromCache = $this->_redis->get($this->_targetURL);
+                $hashFromCache = $this->_redis->get($this->_targetURLHash);
                 if (!$hashFromCache) {
                     $watchdog = -2;
                 }
@@ -655,8 +664,8 @@ class CheckCertif
                 return @json_decode($hashFromCache, true);
             }
         }
-        $this->_redis->set($this->_targetURL, "wait ".$this->_id);
-        $this->_redis->expire($this->_targetURL, 2);// 2s
+        $this->_redis->set($this->_targetURLHash, "wait ".$this->_id);
+        $this->_redis->expire($this->_targetURLHash, 2);// 2s
         return [];
     }
 
@@ -667,8 +676,8 @@ class CheckCertif
      */
     private function _setHashToCache(array $hash)
     {
-        $this->_redis->set($this->_targetURL, json_encode($hash));
-        $this->_redis->expire($this->_targetURL, 1200);// 1200s == 20 min
+        $this->_redis->set($this->_targetURLHash, json_encode($hash));
+        $this->_redis->expire($this->_targetURLHash, 1200);// 1200s == 20 min
         $this->_redis->close();
     }
 

@@ -5,6 +5,7 @@ $this->_gnupgHome = "private"; // Path to GnuPG's home
 $this->_redisHost = "127.0.0.1";
 $this->_redisPort = 6379;
 $this->_redisPassword = ""; //Don't forget to set a password !
+$this->_salt = "EhmgvjDXted0848KJoisP"; // Change me ! // $ head /dev/urandom | tr -dc A-Za-z0-9 | head -c 21 ; echo ''
 $this->_bannedIps = [
     //IPv4
     '^127\\..*$',
