@@ -54,8 +54,7 @@ Edit config_chkcrt.php for your config.
 apt install redis
 ```
 Default listen on 127.0.0.1:6379 and no password.  
-I recommand you to setup a password!
-  
+ 
 in /etc/redis/redis.conf :
 ```
 save 900 1
@@ -69,6 +68,11 @@ save ""
 #save 300 10
 #save 60 10000
 ```
+I recommand you to setup a password!  
+```
+requirepass <your_pass>
+```
+
 ```
 systemctl restart redis
 ```
