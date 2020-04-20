@@ -6,14 +6,14 @@
  * @author  Oros42 <oros.checkcrt@ecirtam.net>
  * @link    https://github.com/Oros42/checkcertif_server
  * @license CC0 Public Domain
- * @version 0.7
- * @date    2020-01-20
+ * @version 0.7.1
+ * @date    2020-04-20
  */
 
 class CheckCertif
 {
     // Version
-    const API_VERSION = "0.7";
+    const API_VERSION = "0.7.1";
 
     // Parameters
 
@@ -49,7 +49,7 @@ class CheckCertif
      * Documentation : https://github.com/phpredis/phpredis#connect-open
      * Example :
      * "127.0.0.1"
-     * "unix://redis.sock"
+     * "/var/run/redis/redis-server.sock"
      */
     private $_redisHost = "127.0.0.1";
 
@@ -536,7 +536,7 @@ class CheckCertif
         // URL
         if (!empty($msgArray['url'])) {
             $this->_targetURL = $this->_getDomain($msgArray['url']);
-            $this->_targetURLHash = hash('sha256', $this->$_salt.$this->_targetURL);
+            $this->_targetURLHash = hash('sha256', $this->_salt.$this->_targetURL);
             if ($this->_targetURL === "") {
                 $this->_log("error targetURL");
                 return false;
