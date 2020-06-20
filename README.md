@@ -104,7 +104,7 @@ mkdir -p $gpgHome
 chmod 700 $gpgHome
 export GNUPGHOME=$gpgHome
 gpg --batch --passphrase '' --quick-generate-key "$email" secp256k1 cert 20y
-FPR=$(gpg --list-options show-only-fpr-mbox --list-secret-keys | awk '{print $1}')
+FPR=$(gpg -k $email|head -n 2|tail -n 1|awk '{print $1}')
 gpg --batch --passphrase '' --quick-add-key $FPR secp256k1 encrypt 1y
 gpg -a --export "$email" > public.gpg
 chown -R www-data $gpgHome
